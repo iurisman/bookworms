@@ -10,6 +10,65 @@ sbt new akka/akka-http-quickstart-scala.g8
 ```
 Use the suggested versions, as Akka does not support Scala 3 in production yet.
 
+## Database Schema
+![Bookworms ERD](Bookworms%20ERD.png)
+
+## JSON Wire Protocol
+### /books
+#### GET /books
+Returns a list of all books in catalog
+```json
+[
+  {
+    "id": "book id",
+    "isbn": "isbn number",
+    "title": "book title",
+    "year": 1976,
+    "copies": 3,
+    "authors": [
+      {
+        "id": "author id",
+        "name": "author name"
+      }, ...
+    ]
+  }, ...
+]
+```
+
+#### GET /books/{id}
+Returns detailed information on a book.
+```json
+{
+  "id": "book id",
+  "isbn": "isbn number",
+  "title": "book title",
+  "year": 1976,
+  "copies": [
+    
+  ],
+  "authors": [
+    {
+      "id": "author id",
+      "name": "author name"
+    }, ...
+  ]
+}
+```
+
+### /copies
+
+#### PUT /copies/{id}
+Update a copy
+Request:
+```json
+{
+  "condition": "mint",
+  "price": 12.34,
+  "available": false
+}
+```
+
+# Original Comments from the Akka Seed Application
 This is a sample Akka HTTP endpoint keeping an in-memory database of users that can be created and listed.
 
 Sources in the sample:
