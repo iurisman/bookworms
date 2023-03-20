@@ -36,12 +36,13 @@ class UserRoutes(userRegistry: ActorRef[UserRegistry.Command])(implicit val syst
   //#users-get-post
   //#users-get-delete
   val userRoutes: Route =
+  concat(
+    // GET / - Health page
+    pathEndOrSingleSlash {
+      complete(Root.get)
+    },
     pathPrefix("users") {
       concat(
-        // GET / - Health page
-        pathEndOrSingleSlash {
-          complete(Root.get)
-        },
         //#users-get-delete
         pathEnd {
           concat(
@@ -79,5 +80,6 @@ class UserRoutes(userRegistry: ActorRef[UserRegistry.Command])(implicit val syst
         })
       //#users-get-delete
     }
+  )
   //#all-routes
 }
