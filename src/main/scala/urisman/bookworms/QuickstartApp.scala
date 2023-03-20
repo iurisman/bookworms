@@ -1,12 +1,11 @@
-package urisman
+package urisman.bookworms
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
 
-import scala.util.Failure
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 //#main-class
 object QuickstartApp {

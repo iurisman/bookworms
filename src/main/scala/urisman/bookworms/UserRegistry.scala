@@ -1,9 +1,9 @@
-package urisman
+package urisman.bookworms
 
 //#user-registry-actor
-import akka.actor.typed.ActorRef
-import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.{ActorRef, Behavior}
+
 import scala.collection.immutable
 
 //#user-case-classes

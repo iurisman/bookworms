@@ -1,7 +1,7 @@
-package urisman
+package urisman.bookworms
 
-import urisman.UserRegistry.ActionPerformed
 import spray.json.RootJsonFormat
+import urisman.bookworms.UserRegistry.ActionPerformed
 
 //#json-formats
 import spray.json.DefaultJsonProtocol
