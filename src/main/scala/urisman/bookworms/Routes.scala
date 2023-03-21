@@ -5,12 +5,13 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import urisman.bookworms.api.{Books, Root}
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse, StatusCodes}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 //#import-json-formats
 //#user-routes-class
-class UserRoutes(implicit ec: ExecutionContext) {
+class Routes(implicit ec: ExecutionContext) {
 
   //implicit val ec: ExecutionContext = system.executionContext
   //#user-routes-class
@@ -29,9 +30,14 @@ class UserRoutes(implicit ec: ExecutionContext) {
         pathEnd {
           concat(
             get {
-              onSuccess(Books.get) {
-                row => complete(row)
-              }
+              onSuccess(Books.get) { body => complete(
+                HttpResponse(
+                  StatusCodes.OK,
+                  entity = HttpEntity(
+                    ContentTypes.`application/json`,
+                    body.toString())
+                )
+              )}
             },
             //            post {
             //              entity(as[Book]) { user =>

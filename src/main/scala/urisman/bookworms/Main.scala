@@ -7,7 +7,7 @@ import akka.http.scaladsl.server.Route
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-object BookwormsServer {
+object Main {
 
   private def startHttpServer(routes: Route)(implicit system: ActorSystem): Unit = {
 
@@ -26,7 +26,7 @@ object BookwormsServer {
 
   def main(args: Array[String]): Unit = {
     val system = ActorSystem("HelloAkkaHttpServer")
-    val routes = new UserRoutes()(system.dispatcher)
+    val routes = new Routes()(system.dispatcher)
     startHttpServer(routes.userRoutes)(system)
   }
 }
