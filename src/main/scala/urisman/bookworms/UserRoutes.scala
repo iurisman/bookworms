@@ -14,7 +14,6 @@ class UserRoutes(implicit ec: ExecutionContext) {
 
   //implicit val ec: ExecutionContext = system.executionContext
   //#user-routes-class
-  import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
   //#all-routes
   //#users-get-post
   //#users-get-delete

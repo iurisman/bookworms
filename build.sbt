@@ -17,7 +17,6 @@ lazy val root = (project in file("."))
     name := "bookworms",
     libraryDependencies ++= Seq(
       "com.typesafe.akka"  %% "akka-http"                % akkaHttpVersion,
-      "com.typesafe.akka"  %% "akka-http-spray-json"     % akkaHttpVersion,
       "com.typesafe.akka"  %% "akka-actor"               % akkaVersion,
       "com.typesafe.akka"  %% "akka-stream"              % akkaVersion,
       "ch.qos.logback"     % "logback-classic"           % "1.2.11",
