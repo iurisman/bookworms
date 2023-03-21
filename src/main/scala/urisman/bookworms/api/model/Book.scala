@@ -1,4 +1,4 @@
-package urisman.bookworms.model
+package urisman.bookworms.api.model
 
 import java.time.LocalDate
 

@@ -1,17 +1,16 @@
 package urisman.bookworms.db
 
 import slick.jdbc.PostgresProfile.api._
-import urisman.bookworms.model.Book
-
+//import urisman.bookworms.model.Book
+import urisman.bookworms.db.codegen.Tables._
 import scala.concurrent.Future
 object Postgres {
 
-  private val db = {
+  private val db = Database.forConfig("bookworms.db")
 
-    Database.forConfig("db")
-  }
-
-  def getBooks(): Future[Seq[Book]] = {
-    sql"""SELECT id, isbn, title, pub_date FROM books""".as[Seq[Book]]
+  def getBooks: Future[Seq[BooksRow]] = {
+    db.run(
+      sql"""SELECT id, isbn, title, pub_date FROM books"""
+        .as[BooksRow])
   }
 }

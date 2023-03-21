@@ -1,8 +1,15 @@
 package urisman.bookworms.api
 
-import scala.concurrent.Future
-
+import scala.concurrent.{ExecutionContext, Future}
+import urisman.bookworms.api.model.Book
+import urisman.bookworms.db.Postgres
+import urisman.bookworms.db.codegen.Tables.BooksRow
 object Books {
 
-  def get(): Future[Seq[Book]] = ???
+  def get(implicit ec: ExecutionContext): Future[Seq[BooksRow]] = {
+    Postgres.getBooks
+      .map {
+        bookRow => bookRow
+      }
+  }
 }
