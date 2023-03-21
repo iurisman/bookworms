@@ -1,6 +1,3 @@
-import slick.codegen.SourceCodeGenerator
-import slick.model
-
 lazy val akkaHttpVersion = "10.4.0"
 lazy val akkaVersion = "2.7.0"
 lazy val circeVersion = "0.14.3"
@@ -12,7 +9,6 @@ lazy val circeVersion = "0.14.3"
 fork := true
 
 lazy val root = (project in file("."))
-  .enablePlugins(CodegenPlugin)
   .settings(
     inThisBuild(List(
       organization    := "urisman.net",
@@ -39,13 +35,5 @@ lazy val root = (project in file("."))
       "com.typesafe.akka"  %% "akka-actor-testkit-typed" % akkaVersion     % Test,
       "org.scalatest"      %% "scalatest"                % "3.2.9"         % Test
     ),
-    slickCodegenDatabaseUrl := "jdbc:postgresql://localhost:5432/bookworms",
-    slickCodegenDatabaseUser := "bookworms",
-    slickCodegenDatabasePassword := "bookworms",
-    slickCodegenDriver := slick.jdbc.PostgresProfile,
-    slickCodegenJdbcDriver := "org.postgresql.Driver",
-    slickCodegenOutputPackage := "urisman.bookworms.db.codegen",
-    slickCodegenCodeGenerator := { (slickModel: model.Model) => new SourceCodeGenerator(slickModel) },
-    slickCodegenOutputDir := file("src/main/scala")
   )
 
