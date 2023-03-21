@@ -1,18 +1,17 @@
 package urisman.bookworms
 
-import akka.actor.typed.ActorSystem
-import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
+
+import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-//#main-class
 object BookwormsServer {
 
-  //#start-http-server
-  private def startHttpServer(routes: Route)(implicit system: ActorSystem[_]): Unit = {
-    // Akka HTTP still needs a classic ActorSystem to start
-    import system.executionContext
+  private def startHttpServer(routes: Route)(implicit system: ActorSystem): Unit = {
+
+    implicit val ec: ExecutionContext = system.dispatcher
 
     val futureBinding = Http().newServerAt("localhost", 8080).bind(routes)
     futureBinding.onComplete {
@@ -24,20 +23,10 @@ object BookwormsServer {
         system.terminate()
     }
   }
-  //#start-http-server
+
   def main(args: Array[String]): Unit = {
-    //#server-bootstrapping
-    val rootBehavior = Behaviors.setup[Nothing] { context =>
-      val userRegistryActor = context.spawn(UserRegistry(), "UserRegistryActor")
-      context.watch(userRegistryActor)
-
-      val routes = new UserRoutes(userRegistryActor)(context.system)
-      startHttpServer(routes.userRoutes)(context.system)
-
-      Behaviors.empty
-    }
-    val system = ActorSystem[Nothing](rootBehavior, "HelloAkkaHttpServer")
-    //#server-bootstrapping
+    val system = ActorSystem("HelloAkkaHttpServer")
+    val routes = new UserRoutes()(system.dispatcher)
+    startHttpServer(routes.userRoutes)(system)
   }
 }
-//#main-class

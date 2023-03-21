@@ -1,17 +1,15 @@
 package urisman.bookworms.db
 
-import io.circe._
 import io.circe.parser._
 import slick.jdbc.PostgresProfile.api._
 import urisman.bookworms._
-import urisman.bookworms.db.codegen.Tables._
 
 import scala.concurrent.{ExecutionContext, Future}
-final class BookwormsDatabase(implicit ec: ExecutionContext) {
+object BookwormsDatabase {
 
   private val postgres = Database.forConfig("bookworms.db")
 
-  def getBooks: Future[Seq[Book]] = {
+  def getBooks(implicit ec: ExecutionContext): Future[Seq[Book]] = {
     postgres.run(
       sql"""
             SELECT
@@ -31,7 +29,8 @@ final class BookwormsDatabase(implicit ec: ExecutionContext) {
             case Left(error) => throw JsonDecodeException(authorsJson, classOf[Author])
             case Right(result) => result
           }
-          Book(id, isdn, title, pubDate, copies, authors)
+          //Book(id, isdn, title, pubDate, copies, authors)
+          Book(id, isdn, title, copies)
       }}
   }
 }
