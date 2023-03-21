@@ -7,7 +7,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import urisman.bookworms.UserRegistry._
-import urisman.bookworms.api.Root
+import urisman.bookworms.api.{Root, Books}
 
 import scala.concurrent.Future
 
@@ -21,7 +21,7 @@ class UserRoutes(userRegistry: ActorRef[UserRegistry.Command])(implicit val syst
   //#import-json-formats
 
   // If ask takes more time than this to complete the request is failed
-  private implicit val timeout: Timeout = Timeout.create(system.settings.config.getDuration("my-app.routes.ask-timeout"))
+  private implicit val timeout: Timeout = Timeout.create(system.settings.config.getDuration("bookworm.routes.ask-timeout"))
 
   def getUsers(): Future[Users] =
     userRegistry.ask(GetUsers)
@@ -39,15 +39,15 @@ class UserRoutes(userRegistry: ActorRef[UserRegistry.Command])(implicit val syst
   concat(
     // GET / - Health page
     pathEndOrSingleSlash {
-      complete(Root.get)
+      complete(Root.get())
     },
-    pathPrefix("users") {
+    pathPrefix("books") {
       concat(
         //#users-get-delete
         pathEnd {
           concat(
             get {
-              complete(getUsers())
+              complete(Books.get())
             },
             post {
               entity(as[User]) { user =>
