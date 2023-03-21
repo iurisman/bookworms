@@ -31,7 +31,7 @@ class UserRoutes(implicit ec: ExecutionContext) {
           concat(
             get {
               onSuccess(Books.get) {
-                row => complete(Books.get)
+                row => complete(row)
               }
             },
             //            post {

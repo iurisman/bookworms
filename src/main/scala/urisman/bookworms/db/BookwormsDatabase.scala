@@ -29,8 +29,7 @@ object BookwormsDatabase {
             case Left(error) => throw JsonDecodeException(authorsJson, classOf[Author])
             case Right(result) => result
           }
-          //Book(id, isdn, title, pubDate, copies, authors)
-          Book(id, isdn, title, copies)
+          Book(id, isdn, title, pubDate, copies, authors)
       }}
   }
 }
