@@ -20,6 +20,8 @@ lazy val root = (project in file("."))
       "com.typesafe.akka"  %% "akka-actor"               % akkaVersion,
       "com.typesafe.akka"  %% "akka-stream"              % akkaVersion,
       "ch.qos.logback"     % "logback-classic"           % "1.2.11",
+      "ch.megard"          %% "akka-http-cors"           % "1.2.0",
+
       "com.typesafe.scala-logging" %% "scala-logging"    % "3.9.4",
       "com.typesafe.slick" %% "slick"                    % "3.4.1",
       "com.typesafe.slick" %% "slick-hikaricp"           % "3.4.1",
