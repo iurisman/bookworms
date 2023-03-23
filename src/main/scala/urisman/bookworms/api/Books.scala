@@ -1,13 +1,19 @@
 package urisman.bookworms.api
 
-import io.circe._
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse, StatusCodes}
 import io.circe.syntax._
 import urisman.bookworms.db.BookwormsDatabase
 
 import scala.concurrent.{ExecutionContext, Future}
 
-object Books {
+object Books extends Endpoint {
 
-  def get(implicit ec: ExecutionContext): Future[Json] =
-    BookwormsDatabase.getBooks.map(books => books.asJson)
+  /** Get summaries on all books */
+  def get(implicit ec: ExecutionContext): Future[HttpResponse] =
+    BookwormsDatabase.getBooks.map(books => okResponse(books))
+
+  /** Get a book's details */
+  def get(bookId: Int)(implicit ec: ExecutionContext): Future[HttpResponse] =
+    BookwormsDatabase.getBookDetails(bookId).map(copies => okResponse(copies))
+
 }

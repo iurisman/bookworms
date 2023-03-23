@@ -32,4 +32,54 @@ object BookwormsDatabase {
           Book(id, isdn, title, pubDate, copies, authors)
       }}
   }
+
+  def getBook(id: Int)(implicit ec: ExecutionContext): Future[Option[Book]] = {
+    postgres.run(
+      sql"""
+            SELECT
+              b.id, b.isbn, b.title, b.pub_date,
+              (
+                SELECT
+                COUNT(*) FROM copies c WHERE c.book_id = b.id AND c.available
+              ) AS "count",
+              (
+                SELECT json_agg(json_build_object('id', a.id, 'first', a.first, 'last', a.last))
+                FROM authors a, book_authors ba WHERE ba.book_id = b.id AND ba.author_id = a.id)
+            FROM books b
+            WHERE b.id = ${id};
+            """.as[(Int, String, String, java.sql.Date, Int, String)])
+      .map {
+        _.headOption.map {
+          case (id, isdn, title, pubDate, copies, authorsJson) =>
+            val authors = decode[Seq[Author]](authorsJson) match {
+              case Left(error) => throw JsonDecodeException(authorsJson, classOf[Author])
+              case Right(result) => result
+            }
+            Book(id, isdn, title, pubDate, copies, authors)
+        }
+      }
+  }
+
+  def getBookDetails(bookId: Int)(implicit ec: ExecutionContext): Future[Option[BookDetails]] = {
+    for {
+      bookOpt <- getBook(bookId)
+      copies <- getCopiesOf(bookId)
+    } yield bookOpt.map(BookDetails(_, copies))
+  }
+
+  /** Get all copies of a book */
+  def getCopiesOf(bookId: Int)(implicit ec: ExecutionContext): Future[Seq[Copy]] = {
+    postgres.run(
+      sql"""
+            SELECT id, book_id, condition, price, available
+            FROM copies
+            WHERE book_id = ${bookId} AND available;
+            """.as[(Int, Int, String, BigDecimal, Boolean)])
+      .map {
+        _.map {
+          case (id, bookId, condition, price, isAvailable) =>
+            Copy(id, bookId, condition, price, isAvailable)
+        }
+      }
+  }
 }

@@ -2,49 +2,50 @@ package urisman.bookworms
 
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.Route
+import akka.http.scaladsl.server.{ExceptionHandler, Route}
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
+import com.typesafe.scalalogging.LazyLogging
 import urisman.bookworms.api.{Books, Root}
 
 import scala.concurrent.ExecutionContext
 class Routes(implicit ec: ExecutionContext) {
 
+  val rootRoutes = pathEndOrSingleSlash {
+    get {
+      // GET / - Health page
+      complete(Root.get())
+    }
+  }
+
+  val booksRoutes = pathPrefix("books") {
+    concat(
+      pathEnd {
+        concat(
+          get {
+            onSuccess(Books.get) { resp => complete(resp) }
+          },
+          //            post {
+          //              entity(as[Book]) { user =>
+          //                onSuccess(createUser(user)) { performed =>
+          //                  complete((StatusCodes.Created, performed))
+          //                }
+          //              }
+          //            }
+        )
+      },
+      path(Segment) { bookId =>
+        get {
+          onSuccess(Books.get(bookId.toInt)) (resp => complete (resp))
+        }
+      }
+    )
+  }
+
   val userRoutes: Route = {
     cors() {
-      concat(
-        // GET / - Health page
-        pathEndOrSingleSlash {
-          complete(Root.get())
-        },
-        pathPrefix("books") {
-          concat(
-            //#users-get-delete
-            pathEnd {
-              concat(
-                get {
-                  onSuccess(Books.get) { body =>
-                    complete(
-                      HttpResponse(
-                        StatusCodes.OK,
-                        entity = HttpEntity(
-                          ContentTypes.`application/json`,
-                          body.toString())
-                      )
-                    )
-                  }
-                },
-                //            post {
-                //              entity(as[Book]) { user =>
-                //                onSuccess(createUser(user)) { performed =>
-                //                  complete((StatusCodes.Created, performed))
-                //                }
-                //              }
-                //            }
-              )
-            }
-          )
-        }
-      )
+      handleExceptions(Routes.customExceptionHandler) {
+        rootRoutes ~ booksRoutes
+      }
     }
   }
   //        //#users-get-delete
@@ -71,4 +72,12 @@ class Routes(implicit ec: ExecutionContext) {
 //      //#users-get-delete
 //    }
 //  )
+}
+
+object Routes extends LazyLogging {
+  private val customExceptionHandler = ExceptionHandler {
+    case t: Throwable =>
+      logger.error("Unhandled exception:", t)
+      complete(HttpResponse(StatusCodes.BadRequest, entity = "Something is rotten in the State of Denmark"))
+  }
 }

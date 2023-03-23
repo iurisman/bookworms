@@ -20,7 +20,7 @@ CREATE TABLE copies (
   id                SERIAL PRIMARY KEY,
   book_id           INTEGER NOT NULL REFERENCES books(id),
   condition         VARCHAR(32),
-  price             MONEY,
+  price             NUMERIC(10,2),
   available         BOOLEAN NOT NULL
  );
 
