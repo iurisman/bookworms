@@ -34,7 +34,8 @@ header img {
 }
 
 h2 {
-  margin: 5px 0 0;
+  margin: 15px 0;
+  display: inline-block;
 }
 
 h3 {
@@ -68,18 +69,24 @@ table {
     clear: both;
     margin: 0 auto;
     border-collapse: collapse;
+    border: none;
 }
 
 table td,
 table th {
     text-align: left;
-    border: 2px solid;
-    border-color: #ddd;
     padding: 2px 4px;
+    vertical-align: top;
 }
 
 table th {
     background-color: #eee;
+}
+
+table.books-inventory td,
+table.books-inventory th {
+    border: 2px solid;
+    border-color: #ddd;
 }
 
 .book-detail {

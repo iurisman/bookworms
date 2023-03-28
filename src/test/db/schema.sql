@@ -8,7 +8,8 @@ CREATE TABLE books (
   id               SERIAL PRIMARY KEY,
   isbn             VARCHAR(16) NOT NULL,
   title            VARCHAR(256) NOT NULL,
-  pub_date         DATE NOT NULL
+  pub_date         DATE NOT NULL,
+  cover_image_uri  VARCHAR(512) NOT NULL
  );
 
 CREATE TABLE book_authors (
@@ -40,13 +41,18 @@ INSERT INTO AUTHORS (first, last)
     ('Andrew', 'Tanenbaum'),
     ('Herbert', 'Bos');
 
-INSERT INTO BOOKS (isbn, title, pub_date)
+INSERT INTO BOOKS (isbn, title, pub_date, cover_image_uri)
   VALUES
-    ('978-0131103627', 'C Programming Language, 2nd Edition', to_date('March 22, 1988','Month DD, YYYY')),
-    ('978-0201038033', 'The Art of Computer Programming', to_date('1973','YYYY')),
-    ('978-0321486813', 'Compilers: Principles, Techniques, and Tools', to_date('August 31, 2006','Month DD, YYYY')),
-    ('978-0997148008', 'Programming in Scala, Fifth Edition', to_date('June 15, 2021','Month DD, YYYY')),
-    ('978-0133591620', 'Modern Operating Systems', to_date('March 10, 2014','Month DD, YYYY'));
+    ('978-0131103627', 'C Programming Language, 2nd Edition', to_date('March 22, 1988','Month DD, YYYY'),
+     'https://m.media-amazon.com/images/I/411ejyE8obL._SX218_BO1,204,203,200_QL40_FMwebp_.jpg'),
+    ('978-0201038033', 'The Art of Computer Programming', to_date('1973','YYYY'),
+     'https://m.media-amazon.com/images/I/41w-UIseGpL._SX373_BO1,204,203,200_.jpg'),
+    ('978-0321486813', 'Compilers: Principles, Techniques, and Tools', to_date('August 31, 2006','Month DD, YYYY'),
+     'https://m.media-amazon.com/images/I/51vQlx7ig3L._SY291_BO1,204,203,200_QL40_FMwebp_.jpg'),
+    ('978-0997148008', 'Programming in Scala, Fifth Edition', to_date('June 15, 2021','Month DD, YYYY'),
+     'https://m.media-amazon.com/images/I/41Kbvtzc99S._SX377_BO1,204,203,200_.jpg'),
+    ('978-0133591620', 'Modern Operating Systems', to_date('March 10, 2014','Month DD, YYYY'),
+     'https://m.media-amazon.com/images/I/511H8QWUL4L._SX218_BO1,204,203,200_QL40_FMwebp_.jpg');
 
 INSERT INTO book_authors (book_id, author_id)
   VALUES

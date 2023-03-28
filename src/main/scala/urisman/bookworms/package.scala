@@ -24,7 +24,7 @@ package object bookworms {
     implicit val codec: Codec[Author] = deriveCodec[Author]
   }
 
-  case class Book(id: Int, isbn: String, title: String, pubDate: java.sql.Date, copies: Int, authors: Seq[Author])
+  case class Book(id: Int, isbn: String, title: String, pubDate: java.sql.Date, coverImageUri: String, copies: Int, authors: Seq[Author])
   object Book {
     implicit val codec: Codec[Book] = deriveCodec[Book]
   }

@@ -13,7 +13,7 @@ object BookwormsDatabase {
     postgres.run(
       sql"""
             SELECT
-              b.id, b.isbn, b.title, b.pub_date,
+              b.id, b.isbn, b.title, b.pub_date, b.cover_image_uri,
               (
                 SELECT
                 COUNT(*) FROM copies c WHERE c.book_id = b.id AND c.available
@@ -22,14 +22,14 @@ object BookwormsDatabase {
                 SELECT json_agg(json_build_object('id', a.id, 'first', a.first, 'last', a.last))
                 FROM authors a, book_authors ba WHERE ba.book_id = b.id AND ba.author_id = a.id)
             FROM books b;
-            """.as[(Int, String, String, java.sql.Date, Int, String)])
+            """.as[(Int, String, String, java.sql.Date, String, Int, String)])
       .map { _.map {
-        case (id, isdn, title, pubDate, copies, authorsJson) =>
+        case (id, isdn, title, pubDate, coverImageUri, copies, authorsJson) =>
           val authors = decode[Seq[Author]](authorsJson) match {
             case Left(error) => throw JsonDecodeException(authorsJson, classOf[Author])
             case Right(result) => result
           }
-          Book(id, isdn, title, pubDate, copies, authors)
+          Book(id, isdn, title, pubDate, coverImageUri, copies, authors)
       }}
   }
 
@@ -37,7 +37,7 @@ object BookwormsDatabase {
     postgres.run(
       sql"""
             SELECT
-              b.id, b.isbn, b.title, b.pub_date,
+              b.id, b.isbn, b.title, b.pub_date, b.cover_image_uri,
               (
                 SELECT
                 COUNT(*) FROM copies c WHERE c.book_id = b.id AND c.available
@@ -47,15 +47,15 @@ object BookwormsDatabase {
                 FROM authors a, book_authors ba WHERE ba.book_id = b.id AND ba.author_id = a.id)
             FROM books b
             WHERE b.id = ${id};
-            """.as[(Int, String, String, java.sql.Date, Int, String)])
+            """.as[(Int, String, String, java.sql.Date, String, Int, String)])
       .map {
         _.headOption.map {
-          case (id, isdn, title, pubDate, copies, authorsJson) =>
+          case (id, isdn, title, pubDate, coverImageUri, copies, authorsJson) =>
             val authors = decode[Seq[Author]](authorsJson) match {
               case Left(error) => throw JsonDecodeException(authorsJson, classOf[Author])
               case Right(result) => result
             }
-            Book(id, isdn, title, pubDate, copies, authors)
+            Book(id, isdn, title, pubDate, coverImageUri, copies, authors)
         }
       }
   }

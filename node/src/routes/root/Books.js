@@ -21,7 +21,7 @@ export function Books() {
   if (books) {
     return (
     <div>
-      <table>
+      <table className="books-inventory">
         <thead>
           <tr>
             <th>Title</th>

@@ -32,6 +32,7 @@ lazy val root = (project in file("."))
       "io.circe"           %% "circe-generic"            % circeVersion,
       "io.circe"           %% "circe-parser"             % circeVersion,
 
+      // Testing libs
       "com.typesafe.akka"  %% "akka-http-testkit"        % akkaHttpVersion % Test,
       "com.typesafe.akka"  %% "akka-actor-testkit-typed" % akkaVersion     % Test,
       "org.scalatest"      %% "scalatest"                % "3.2.9"         % Test
