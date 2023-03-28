@@ -71,14 +71,14 @@ object BookwormsDatabase {
   def getCopiesOf(bookId: Int)(implicit ec: ExecutionContext): Future[Seq[Copy]] = {
     postgres.run(
       sql"""
-            SELECT id, book_id, condition, price, available
+            SELECT id, book_id, condition, price, location, available
             FROM copies
             WHERE book_id = ${bookId} AND available;
-            """.as[(Int, Int, String, BigDecimal, Boolean)])
+            """.as[(Int, Int, String, BigDecimal, String, Boolean)])
       .map {
         _.map {
-          case (id, bookId, condition, price, isAvailable) =>
-            Copy(id, bookId, condition, price, isAvailable)
+          case (id, bookId, condition, price, location, isAvailable) =>
+            Copy(id, bookId, condition, price, location, isAvailable)
         }
       }
   }

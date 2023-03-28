@@ -4,7 +4,7 @@ export function BookCopy({copy}) {
         <tr key={copy.id}>
             <td>{copy.condition}</td>
             <td style={{"textAlign":"center"}}>{copy.price}</td>
-            <td><a href={"/buy/" + copy.id}>buy</a></td>
+            <td><a href={"/checkout/" + copy.id}>buy</a></td>
         </tr>
     )
 }

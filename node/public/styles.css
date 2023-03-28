@@ -1,6 +1,6 @@
 header {
   text-align: center;
-  margin: 20px 0;
+  margin: 20px 0 40px;
   background-image: url("/bookworm.webp");
   background-position: 30% 74%;
   display: inline-block;
@@ -89,6 +89,14 @@ table.books-inventory th {
     border-color: #ddd;
 }
 
-.book-detail {
-  clear: both;
+table.book-detail h2 {
+    margin-top: 0;
+}
+
+table.book-detail button {
+    width: 200px;
+    display: block;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 20px 0;
 }

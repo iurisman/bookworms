@@ -29,7 +29,7 @@ package object bookworms {
     implicit val codec: Codec[Book] = deriveCodec[Book]
   }
 
-  case class Copy(id: Int, bookId: Int, condition: String, price: BigDecimal, available: Boolean)
+  case class Copy(id: Int, bookId: Int, condition: String, price: BigDecimal, location: String, available: Boolean)
   object Copy {
     implicit val codec: Codec[Copy] = deriveCodec
   }
