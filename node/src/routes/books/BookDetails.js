@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 
-export function Copies({book}) {
+export function BookDetails({book}) {
   let params = useParams();
   return (
     <div>
