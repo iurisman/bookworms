@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { Book } from "./Book";
 import { getBooks } from "../../backend.js";

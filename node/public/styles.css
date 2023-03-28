@@ -2,6 +2,7 @@ header {
   text-align: center;
   margin: 20px 0;
 }
+
 header a {
   font-size: 24px;
   color: DarkSlateGray;
@@ -30,6 +31,22 @@ header img {
   font-size: 16px;
   font-weight: 300;
   margin: 0;
+}
+
+h2 {
+  margin: 5px 0 0;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 5px;
+}
+
+h4 {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 5px;
 }
 
 body {
@@ -63,4 +80,8 @@ table th {
 
 table th {
     background-color: #eee;
+}
+
+.book-detail {
+  clear: both;
 }
