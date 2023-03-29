@@ -9,8 +9,13 @@ trait Endpoint {
   def okResponse[T](body: T)(implicit encoder: Encoder[T]): HttpResponse =
     HttpResponse(
       StatusCodes.OK,
-      entity = HttpEntity(
-        ContentTypes.`application/json`,
-        body.asJson.toString())
+      entity = HttpEntity(ContentTypes.`application/json`, body.asJson.toString())
   )
+
+  def badRequestResponse(msg: String): HttpResponse =
+    HttpResponse(
+      StatusCodes.BadRequest,
+      entity = HttpEntity(ContentTypes.`text/plain(UTF-8)`,msg)
+    )
+
 }

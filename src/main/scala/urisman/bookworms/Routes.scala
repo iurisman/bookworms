@@ -5,19 +5,19 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{ExceptionHandler, Route}
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
 import com.typesafe.scalalogging.LazyLogging
-import urisman.bookworms.api.{Books, Root}
+import urisman.bookworms.api.{Books, Copies, Root}
 
 import scala.concurrent.ExecutionContext
 class Routes(implicit ec: ExecutionContext) {
 
-  val rootRoutes = pathEndOrSingleSlash {
+  private val rootRoutes = pathEndOrSingleSlash {
     get {
       // GET / - Health page
       complete(Root.get())
     }
   }
 
-  val booksRoutes = pathPrefix("books") {
+  private val booksRoutes = pathPrefix("books") {
     concat(
       pathEnd {
         concat(
@@ -41,10 +41,20 @@ class Routes(implicit ec: ExecutionContext) {
     )
   }
 
-  val userRoutes: Route = {
+  private val copiesRoutes = pathPrefix("copies") {
+    concat(
+      path(Segment) { copyId =>
+        put {
+          onSuccess(Copies.hold(copyId.toInt))(resp => complete(resp))
+        }
+      }
+    )
+  }
+
+  val routes: Route = {
     cors() {
       handleExceptions(Routes.customExceptionHandler) {
-        rootRoutes ~ booksRoutes
+        rootRoutes ~ booksRoutes ~ copiesRoutes
       }
     }
   }

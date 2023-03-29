@@ -82,4 +82,22 @@ object BookwormsDatabase {
         }
       }
   }
+
+  /** Get a copy by id */
+  def getCopy(copyId: Int)(implicit ec: ExecutionContext): Future[Option[Copy]] = {
+    postgres.run(
+      sql"""
+            SELECT id, book_id, condition, price, location, available
+            FROM copies
+            WHERE id = ${copyId} AND available;
+            """.as[(Int, Int, String, BigDecimal, String, Boolean)])
+      .map {
+        _.map {
+          case (id, bookId, condition, price, location, isAvailable) =>
+            Copy(id, bookId, condition, price, location, isAvailable)
+        }
+          .headOption
+      }
+  }
+
 }

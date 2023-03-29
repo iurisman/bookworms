@@ -27,6 +27,6 @@ object Main {
   def main(args: Array[String]): Unit = {
     val system = ActorSystem("HelloAkkaHttpServer")
     val routes = new Routes()(system.dispatcher)
-    startHttpServer(routes.userRoutes)(system)
+    startHttpServer(routes.routes)(system)
   }
 }
