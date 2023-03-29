@@ -1,8 +1,19 @@
 import { useParams } from "react-router-dom";
-import { getBookDetails } from "../../backend.js";
+import { useEffect, useState } from 'react';
+import { putCopyHold } from "../../backend.js";
 
 export function Checkout() {
   const params = useParams();
+
+  const [receipt, setReceipt] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      const newReceipt = await putCopyHold(params.id);
+      setReceipt(newReceipt);
+    };
+    fetchData();
+  }, []);
+
   const bookDetails = JSON.parse(localStorage.getItem('book'));
   const book = bookDetails.book;
   const copy = bookDetails.availableCopies.find(elem => elem.id == params.id);
@@ -28,16 +39,16 @@ export function Checkout() {
                   <tbody>
                     <tr>
                       <td>Item</td>
-                      <td>{copy.price}</td>
+                      <td>{receipt.price}</td>
                     </tr><tr>
                       <td>Tax</td>
-                      <td>{tax}</td>
+                      <td>{receipt.tax}</td>
                     </tr><tr>
                       <td>Shipping</td>
-                      <td>{shipping}</td>
+                      <td>{receipt.shipping}</td>
                     </tr><tr>
-                      <td>Total</td>
-                      <td>{total}</td>
+                      <td><b>Total</b></td>
+                      <td><b>{receipt.total}</b></td>
                     </tr>
                   </tbody>
                 </table>
