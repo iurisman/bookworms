@@ -10,10 +10,10 @@ object Books extends Endpoint {
 
   /** Get summaries on all books */
   def get(implicit ec: ExecutionContext): Future[HttpResponse] =
-    BookwormsDatabase.getBooks.map(books => okResponse(books))
+    BookwormsDatabase.getBooks.map(books => respondOk(books))
 
   /** Get a book's details */
   def get(bookId: Int)(implicit ec: ExecutionContext): Future[HttpResponse] =
-    BookwormsDatabase.getBookDetails(bookId).map(copies => okResponse(copies))
+    BookwormsDatabase.getBookDetails(bookId).map(copies => respondOk(copies))
 
 }

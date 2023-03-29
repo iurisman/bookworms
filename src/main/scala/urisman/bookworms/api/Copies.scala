@@ -33,9 +33,10 @@ object Copies extends Endpoint {
   def hold(copyId: Int)(implicit ec: ExecutionContext): Future[HttpResponse] =
     BookwormsDatabase.getCopy(copyId)
       .map {
-        case Some(copy) => okResponse(receiptFor(copy))
-        case None => badRequestResponse(s"No copy with ID $copyId")
+        case Some(copy) => respondOk(receiptFor(copy))
+        case None => respondBadRequest(s"No copy with ID $copyId")
       }
-
+  def update(copy: Copy): Future[HttpResponse] =
+    Future.successful(respondNoContent())
 
 }
