@@ -5,7 +5,10 @@ export function Checkout() {
   const params = useParams();
   const bookDetails = JSON.parse(localStorage.getItem('book'));
   const book = bookDetails.book;
-  const copy = bookDetails.availableCopies.find(elem => elem.id == params.id)
+  const copy = bookDetails.availableCopies.find(elem => elem.id == params.id);
+  const tax = (copy.price * 0.097).toFixed(2);
+  const shipping = (Math.random() * 12).toFixed(2);
+  const total = copy.price + tax + shipping;
     return (
       <table className="book-detail">
         <tbody>
@@ -28,13 +31,13 @@ export function Checkout() {
                       <td>{copy.price}</td>
                     </tr><tr>
                       <td>Tax</td>
-                      <td></td>
+                      <td>{tax}</td>
                     </tr><tr>
                       <td>Shipping</td>
-                      <td></td>
+                      <td>{shipping}</td>
                     </tr><tr>
                       <td>Total</td>
-                      <td></td>
+                      <td>{total}</td>
                     </tr>
                   </tbody>
                 </table>

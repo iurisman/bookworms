@@ -93,10 +93,25 @@ table.book-detail h2 {
     margin-top: 0;
 }
 
+table.bill {
+    width: 300px;
+    float: left;
+}
+
+table.bill td:nth-child(2) {
+    text-align: right;
+}
+
 table.book-detail button {
+    clear: both;
     width: 200px;
     display: block;
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: OldLace;
+    color: SaddleBrown;
     margin: 20px 0;
+    border-color: Brown;
+    border-radius: 5px;
+    cursor: pointer;
 }
