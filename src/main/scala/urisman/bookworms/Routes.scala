@@ -88,6 +88,6 @@ object Routes extends LazyLogging {
   private val customExceptionHandler = ExceptionHandler {
     case t: Throwable =>
       logger.error("Unhandled exception:", t)
-      complete(HttpResponse(StatusCodes.BadRequest, entity = "Something is rotten in the State of Denmark"))
+      complete(HttpResponse(StatusCodes.InternalServerError, entity = "Something is rotten in the State of Denmark"))
   }
 }

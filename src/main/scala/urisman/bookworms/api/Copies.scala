@@ -4,19 +4,24 @@ import akka.http.scaladsl.model.HttpResponse
 import urisman.bookworms.db.BookwormsDatabase
 import urisman.bookworms._
 
+import java.text.{FieldPosition, NumberFormat, ParsePosition}
+import java.util.Locale
 import scala.concurrent.{ExecutionContext, Future}
+import scala.math.BigDecimal.RoundingMode
 import scala.util.Random
 
 object Copies extends Endpoint {
 
   def receiptFor(copy: Copy): Receipt = {
-    import java.math.{MathContext, RoundingMode}
-    val mathCtx = new MathContext(2, RoundingMode.HALF_EVEN)
-    val price = copy.price(mathCtx)
-    val tax = copy.price * BigDecimal(0.097)
-    val shipping = BigDecimal(Random.nextFloat() * price.doubleValue)(mathCtx)
+    val price = copy.price.setScale(2)
+    val tax = copy.price * BigDecimal(0.097).setScale(2, RoundingMode.HALF_EVEN)
+    val shipping = BigDecimal(
+      // Simulate shipping as a stable random fraction of the price.
+      new Random(copy.price.longValue).nextFloat() * price.doubleValue
+    ).setScale(2, RoundingMode.HALF_EVEN)
     val total = price + tax + shipping
-    Receipt(price.toString, tax.toString, shipping.toString, total.toString)
+    val format = NumberFormat.getCurrencyInstance(Locale.US)
+    Receipt(format.format(price), format.format(tax), format.format(shipping), format.format(total))
   }
 
   /**
