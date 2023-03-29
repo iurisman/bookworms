@@ -1,7 +1,6 @@
 package urisman.bookworms.api
 
 import akka.http.scaladsl.model.HttpResponse
-import urisman.bookworms.db.BookwormsDatabase
 import urisman.bookworms._
 
 import java.text.{FieldPosition, NumberFormat, ParsePosition}
@@ -31,12 +30,16 @@ object Copies extends Endpoint {
    * holds on books that didn't end up being purchased.
    */
   def hold(copyId: Int)(implicit ec: ExecutionContext): Future[HttpResponse] =
-    BookwormsDatabase.getCopy(copyId)
+    Postgres.getCopy(copyId)
       .map {
         case Some(copy) => respondOk(receiptFor(copy))
         case None => respondBadRequest(s"No copy with ID $copyId")
       }
-  def update(copy: Copy): Future[HttpResponse] =
-    Future.successful(respondNoContent())
+  def update(copy: Copy)(implicit ec: ExecutionContext): Future[HttpResponse] =
+    Postgres.updateCopy(copy)
+      .map {
+        case true => respondNoContent()
+        case false => respondBadRequest(s"No copy with ID ${copy.id}")
+      }
 
 }

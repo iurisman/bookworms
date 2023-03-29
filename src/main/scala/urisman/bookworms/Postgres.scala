@@ -1,11 +1,10 @@
-package urisman.bookworms.db
+package urisman.bookworms
 
 import io.circe.parser._
 import slick.jdbc.PostgresProfile.api._
-import urisman.bookworms._
 
 import scala.concurrent.{ExecutionContext, Future}
-object BookwormsDatabase {
+object Postgres {
 
   private val postgres = Database.forConfig("bookworms.db")
 
@@ -98,6 +97,21 @@ object BookwormsDatabase {
         }
           .headOption
       }
+  }
+
+  /** Update a book copy, returning true if successful or false otherwise */
+  def updateCopy(copy: Copy)(implicit ec: ExecutionContext): Future[Boolean] = {
+    postgres.run(
+      sqlu"""
+            UPDATE copies
+            SET book_id = ${copy.bookId},
+                condition = ${copy.condition},
+                price = ${copy.price},
+                location = ${copy.location},
+                available = ${copy.available}
+            WHERE id = ${copy.id};
+            """)
+      .map(_ == 1)
   }
 
 }
