@@ -66,7 +66,7 @@ export function Checkout() {
 }
 
 function buy(copy) {
-  console.log(copy);
   buyCopy(copy);
+  window.location="/";
 }
 
