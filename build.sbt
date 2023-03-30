@@ -37,5 +37,7 @@ lazy val root = (project in file("."))
       "com.typesafe.akka"  %% "akka-actor-testkit-typed" % akkaVersion     % Test,
       "org.scalatest"      %% "scalatest"                % "3.2.9"         % Test
     ),
+    // To debug, uncomment and connect with eclipse after the VM is suspended.
+    // Test / javaOptions ++= Seq("-Xdebug",  "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000")
   )
 

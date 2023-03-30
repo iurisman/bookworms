@@ -11,3 +11,8 @@ export function getBookDetails(bookId) {
 export function putCopyHold(copyId) {
   return fetch(`${url}/copies/${copyId}`, {"method": "PUT"}).then(resp => resp.json());
 }
+
+export function buyCopy(copy) {
+  console.log(copy);
+  //return fetch(`${url}/copies/${copyId}`, {"method": "PUT"}).then(resp => resp.json());
+}
