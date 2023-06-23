@@ -6,3 +6,7 @@
 /project/target/
 /project/project/target/
 /node/node_modules/
+/node/target/
+/node/package-lock.json
+/node/package.json
+/node/project/

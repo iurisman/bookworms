@@ -17,6 +17,7 @@ $ git clone git@github.com:iurisman/bookworms.git
 $ cd bookworms/src/test/db
 ```
 To run with containerized Postgres:
+Ensure Docker Desktop is running
 ```shell
 ./postgres-down.sh
 ./schema.sh
