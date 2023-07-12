@@ -1,8 +1,7 @@
 package urisman.bookworms.api
 
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse, StatusCodes}
-import io.circe.syntax._
-import urisman.bookworms.Postgres
+import akka.http.scaladsl.model.HttpResponse
+import urisman.bookworms._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -16,4 +15,8 @@ object Books extends Endpoint {
   def get(bookId: Int)(implicit ec: ExecutionContext): Future[HttpResponse] =
     Postgres.getBookDetails(bookId).map(copies => respondOk(copies))
 
+  /** Add a new book -- UNIMPLEMENTED */
+  def post(book: Book): Future[HttpResponse] = {
+    Future.successful(respondBadRequest("Unimplemented"))
+  }
 }

@@ -1,6 +1,6 @@
 package urisman.bookworms
 
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse}
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{Directive1, ExceptionHandler, Route}
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
@@ -27,18 +27,18 @@ class Routes(implicit ec: ExecutionContext) {
           get {
             onSuccess(Books.get)(resp => complete(resp))
           },
-          //            post {
-          //              entity(as[Book]) { user =>
-          //                onSuccess(createUser(user)) { performed =>
-          //                  complete((StatusCodes.Created, performed))
-          //                }
-          //              }
-          //            }
+          // This would be a place to implement adding a book
+          post {
+            entity(as[String]) {
+              body =>
+                onSuccess(withBodyAs[Book](body)(Books.post))(resp => complete(resp))
+            }
+          }
         )
       },
       path(Segment) { bookId =>
         get {
-          onSuccess(Books.get(bookId.toInt)) (resp => complete(resp))
+          onSuccess(Books.get(bookId.toInt))(resp => complete(resp))
         }
       }
     )
@@ -48,11 +48,9 @@ class Routes(implicit ec: ExecutionContext) {
     concat(
       pathEndOrSingleSlash {
         put {
-          put {
-            entity(as[String]) {
-              body =>
-                onSuccess(withBodyAs[Copy](body)(Copies.update))(resp => complete(resp))
-            }
+          entity(as[String]) {
+            body =>
+              onSuccess(withBodyAs[Copy](body)(Copies.update))(resp => complete(resp))
           }
         }
       },
@@ -71,30 +69,6 @@ class Routes(implicit ec: ExecutionContext) {
       }
     }
   }
-  //        //#users-get-delete
-//        //#users-get-post
-//        path(Segment) { name =>
-//          concat(
-//            get {
-//              //#retrieve-user-info
-//              rejectEmptyResponse {
-//                onSuccess(getUser(name)) { response =>
-//                  complete(response.maybeUser)
-//                }
-//              }
-//              //#retrieve-user-info
-//            },
-//            delete {
-//              //#users-delete-logic
-//              onSuccess(deleteUser(name)) { performed =>
-//                complete((StatusCodes.OK, performed))
-//              }
-//              //#users-delete-logic
-//            })
-//        })
-//      //#users-get-delete
-//    }
-//  )
 }
 
 object Routes extends LazyLogging {
