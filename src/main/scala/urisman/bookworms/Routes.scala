@@ -1,13 +1,13 @@
 package urisman.bookworms
 
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpResponse, StatusCodes}
+import akka.http.scaladsl.model.{HttpResponse}
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.{Directive1, ExceptionHandler, Route}
-import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
+import akka.http.scaladsl.server.{ExceptionHandler, Route}
 import com.typesafe.scalalogging.LazyLogging
 import urisman.bookworms.api.{Books, Copies, Root}
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success => TrySuccess}
 
 class Routes(implicit ec: ExecutionContext) {
 
@@ -16,6 +16,7 @@ class Routes(implicit ec: ExecutionContext) {
   private val rootRoutes = pathEndOrSingleSlash {
     get {
       // GET / - Health page
+      // complete(HttpResponse(StatusCodes.OK))
       complete(Root.get())
     }
   }
@@ -63,10 +64,8 @@ class Routes(implicit ec: ExecutionContext) {
   }
 
   val routes: Route = {
-    cors() {
-      handleExceptions(customExceptionHandler) {
-        rootRoutes ~ booksRoutes ~ copiesRoutes
-      }
+    handleExceptions(customExceptionHandler) {
+      rootRoutes ~ booksRoutes ~ copiesRoutes
     }
   }
 }
@@ -74,9 +73,8 @@ class Routes(implicit ec: ExecutionContext) {
 object Routes extends LazyLogging {
 
   import akka.http.scaladsl.model.StatusCodes._
-  import scala.reflect.runtime.universe._
   import io.circe._
-  import io.circe.parser._
+  import urisman.bookworms.Json
 
   private val customExceptionHandler = ExceptionHandler {
     case t: Throwable =>
@@ -84,24 +82,17 @@ object Routes extends LazyLogging {
       complete(HttpResponse(InternalServerError, entity = "Something is rotten in the State of Denmark"))
   }
 
-  private def withBodyAs[T](body: String)(f: T => Future[HttpResponse])
-                             (implicit decoder: Decoder[T], tt: TypeTag[T]): Future[HttpResponse] = {
+  private def withBodyAs[T](body: String)(toResponse: T => Future[HttpResponse])
+                           (implicit decoder: Decoder[T]): Future[HttpResponse] = {
 
-    parse(body) match {
-      case Left(ex) =>
+    Json.withBodyAs(body)(toResponse) match {
+      case Failure(t) =>
         Future.successful(
           HttpResponse(
             BadRequest,
-            entity = s"Exception while parsing JSON in request: ${ex.getMessage()}")
+            entity = s"Exception while parsing JSON in request: ${t.getMessage}")
         )
-      case Right(json) =>
-        json.as[T] match {
-          case Left(ex) =>
-            val msg = s"Unable to unmarshal request body to class ${tt.tpe.getClass.getName} "
-            Future.successful(HttpResponse(BadRequest, entity = msg))
-          case Right(t) =>
-            f(t)
-        }
+      case TrySuccess(respF) => respF
     }
   }
 }
