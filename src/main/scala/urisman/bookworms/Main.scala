@@ -25,7 +25,7 @@ object Main {
   }
 
   def main(args: Array[String]): Unit = {
-    val system = ActorSystem("Bookworms HTTP Server")
+    val system = ActorSystem("Bookworms-HTTP-Server")
     val routes = new Routes()(system.dispatcher)
     startHttpServer(routes.routes)(system)
   }
