@@ -4,6 +4,10 @@ import io.circe.parser._
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.{ExecutionContext, Future}
+
+/**
+ * Database access methods.
+ */
 object Postgres {
 
   private val postgres = Database.forConfig("bookworms.db")

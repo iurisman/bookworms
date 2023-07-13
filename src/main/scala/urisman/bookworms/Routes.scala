@@ -1,6 +1,6 @@
 package urisman.bookworms
 
-import akka.http.scaladsl.model.{HttpResponse}
+import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{ExceptionHandler, Route}
 import com.typesafe.scalalogging.LazyLogging
