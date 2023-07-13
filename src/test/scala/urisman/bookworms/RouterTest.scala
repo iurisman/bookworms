@@ -46,7 +46,6 @@ class RouterTest extends AnyWordSpec with Matchers with ScalaFutures with Option
       request ~> routes ~> check {
         status shouldBe StatusCodes.OK
         contentType shouldBe ContentTypes.`application/json`
-        //println(entityAs[String])
         withBodyAs[Seq[Book]](body = entityAs[String]) {
           seq =>
             seq.size shouldBe 5
