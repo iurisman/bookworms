@@ -74,7 +74,6 @@ object Routes extends LazyLogging {
 
   import akka.http.scaladsl.model.StatusCodes._
   import io.circe._
-  import urisman.bookworms.Json
 
   private val customExceptionHandler = ExceptionHandler {
     case t: Throwable =>
@@ -85,7 +84,7 @@ object Routes extends LazyLogging {
   private def withBodyAs[T](body: String)(toResponse: T => Future[HttpResponse])
                            (implicit decoder: Decoder[T]): Future[HttpResponse] = {
 
-    Json.withBodyAs(body)(toResponse) match {
+    parseAndThen(body)(toResponse) match {
       case Failure(t) =>
         Future.successful(
           HttpResponse(

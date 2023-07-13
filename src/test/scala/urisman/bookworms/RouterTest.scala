@@ -21,7 +21,7 @@ class RouterTest extends AnyWordSpec with Matchers with ScalaFutures with Option
 
   private def withBodyAs[T](body: String)(bloc: T => Unit)
                            (implicit decoder: Decoder[T]): Unit = {
-    Json.withBodyAs(body)(bloc) match {
+    parseAndThen(body)(bloc) match {
       case Failure(t) =>
         fail("Unexpected exception in test", t)
       case Success(_) => // AOK.

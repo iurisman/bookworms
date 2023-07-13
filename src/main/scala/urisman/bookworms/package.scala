@@ -3,22 +3,14 @@ package urisman
 import io.circe.Decoder.Result
 import io.circe._
 import io.circe.generic.semiauto._
+import io.circe.parser.parse
 
 import java.sql.Date
+import scala.util.Try
 
 package object bookworms {
 
-  //// JSON marshalling
-  implicit val e1: Codec[java.sql.Date] = new Codec[java.sql.Date]() {
-    // Encoder
-    override def apply(sqlDate: java.sql.Date): Json =
-      Encoder.encodeString(sqlDate.toString)
-    // Decoder
-    override def apply(c: HCursor): Result[Date] = {
-      Decoder.decodeString.map(str => java.sql.Date.valueOf(str)).apply(c)
-    }
-  }
-
+  //// Data transfer case classes
   case class Author(id: Int, first: String, last: String)
   object Author {
     implicit val codec: Codec[Author] = deriveCodec[Author]
@@ -49,4 +41,23 @@ package object bookworms {
   //// Exceptions
   case class JsonDecodeException(source: String, target: Class[_])
     extends Exception(s"""Unable to decode JSON string '$source' as class ${target.getName}""")
+
+  //// JSON marshalling
+  implicit val e1: Codec[java.sql.Date] = new Codec[java.sql.Date]() {
+    // Encoder
+    override def apply(sqlDate: java.sql.Date): Json =
+      Encoder.encodeString(sqlDate.toString)
+
+    // Decoder
+    override def apply(c: HCursor): Result[Date] = {
+      Decoder.decodeString.map(str => java.sql.Date.valueOf(str)).apply(c)
+    }
+  }
+
+  def parseAndThen[T, R](json: String)(mapper: T => R)(implicit decoder: Decoder[T]): Try[R] = {
+    for {
+      json <- parse(json)
+      t <- json.as[T]
+    } yield mapper(t)
+  }.toTry
 }
