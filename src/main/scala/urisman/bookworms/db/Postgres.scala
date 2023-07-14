@@ -1,14 +1,15 @@
-package urisman.bookworms
+package urisman.bookworms.db
 
 import io.circe.parser._
 import slick.jdbc.PostgresProfile.api._
+import urisman.bookworms.{Author, Book, BookDetails, Copy, JsonDecodeException}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
  * Database access methods.
  */
-object Postgres {
+object Postgres extends BookwormsDatabase {
 
   private val postgres = Database.forConfig("bookworms.db")
 

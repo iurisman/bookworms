@@ -6,6 +6,7 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.time.{Millis, Seconds, Span}
 import org.scalatest.wordspec.AnyWordSpec
+import urisman.bookworms.db.Postgres
 
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext

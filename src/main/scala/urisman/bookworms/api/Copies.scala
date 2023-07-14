@@ -2,6 +2,7 @@ package urisman.bookworms.api
 
 import akka.http.scaladsl.model.HttpResponse
 import urisman.bookworms._
+import urisman.bookworms.db.Postgres
 
 import java.text.NumberFormat
 import java.util.Locale
