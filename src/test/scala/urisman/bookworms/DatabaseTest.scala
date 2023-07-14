@@ -15,7 +15,7 @@ class DatabaseTest extends DatabaseSpec {
 
   "Postgres.getBooks()" should {
     "return return all books" in {
-      whenReady(Postgres.getBooks) { seq =>
+      whenReady(database.getBooks) { seq =>
         seq.size shouldBe 5
         seq.find(_.title == "Programming in Scala, Fifth Edition") shouldBe Symbol("defined")
         seq.find(_.title == "Bouchon Bakery") shouldBe None

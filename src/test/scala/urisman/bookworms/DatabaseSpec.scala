@@ -1,5 +1,6 @@
 package urisman.bookworms
 
+import urisman.bookworms.db.BookwormsDatabase
 import org.scalatest.OptionValues
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
@@ -10,6 +11,8 @@ import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 
 class DatabaseSpec extends AnyWordSpec with Matchers with ScalaFutures with OptionValues {
+
+  protected val database: BookwormsDatabase = BookwormsDatabase.database
 
   implicit protected val ec: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(2))
 
