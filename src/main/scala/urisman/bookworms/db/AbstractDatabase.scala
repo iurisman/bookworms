@@ -9,7 +9,7 @@ import scala.concurrent.{ExecutionContext, Future}
 /**
  * Database access methods.
  */
-trait BookwormsDatabase {
+trait AbstractDatabase {
 
   /** Get all books */
   def getBooks(implicit ec: ExecutionContext): Future[Seq[Book]]
@@ -29,6 +29,6 @@ trait BookwormsDatabase {
   def updateCopy(copy: Copy)(implicit ec: ExecutionContext): Future[Boolean]
 }
 
-object BookwormsDatabase {
-  lazy val database: BookwormsDatabase = Postgres
+object AbstractDatabase {
+  lazy val database: AbstractDatabase = Postgres
 }

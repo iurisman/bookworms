@@ -2,7 +2,7 @@ package urisman.bookworms.api
 
 import akka.http.scaladsl.model.HttpResponse
 import urisman.bookworms._
-import urisman.bookworms.db.BookwormsDatabase.database
+import urisman.bookworms.db.AbstractDatabase.database
 
 import scala.concurrent.{ExecutionContext, Future}
 

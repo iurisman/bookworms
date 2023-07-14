@@ -9,7 +9,7 @@ import scala.concurrent.{ExecutionContext, Future}
 /**
  * Database access methods.
  */
-object Postgres extends BookwormsDatabase {
+object Postgres extends AbstractDatabase {
 
   private val postgres = Database.forConfig("bookworms.db")
 
