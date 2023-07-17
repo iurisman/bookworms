@@ -88,7 +88,7 @@ object Routes extends LazyLogging {
       case Failure(t) =>
         Future.successful(
           HttpResponse(
-            BadRequest,
+            UnprocessableContent,
             entity = s"Exception while parsing JSON in request: ${t.getMessage}")
         )
       case TrySuccess(respF) => respF
