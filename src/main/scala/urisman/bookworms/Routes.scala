@@ -1,6 +1,6 @@
 package urisman.bookworms
 
-import akka.http.scaladsl.model.HttpResponse
+import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{ExceptionHandler, Route}
 import com.typesafe.scalalogging.LazyLogging
@@ -16,7 +16,7 @@ class Routes(implicit ec: ExecutionContext) {
   private val rootRoutes = pathEndOrSingleSlash {
     get {
       // GET / - Health page
-      // complete(HttpResponse(StatusCodes.OK))
+      //complete(StatusCodes.OK)
       complete(Root.get())
     }
   }
