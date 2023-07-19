@@ -2,7 +2,7 @@ package urisman.bookworms.api
 
 import akka.http.scaladsl.model._
 
-object Root {
+object Root extends Endpoint {
   def get(): HttpResponse = {
     HttpResponse(
       StatusCodes.OK,

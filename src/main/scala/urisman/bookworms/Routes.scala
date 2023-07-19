@@ -16,8 +16,8 @@ class Routes(implicit ec: ExecutionContext) {
   private val rootRoutes = pathEndOrSingleSlash {
     get {
       // GET / - Health page
-      //complete(StatusCodes.OK)
-      complete(Root.get())
+      complete(StatusCodes.OK)
+//      complete(Root.get())
     }
   }
 
@@ -26,20 +26,23 @@ class Routes(implicit ec: ExecutionContext) {
       pathEnd {
         concat(
           get {
-            onSuccess(Books.get)(resp => complete(resp))
+            complete(StatusCodes.OK)
+//            onSuccess(Books.get)(resp => complete(resp))
           },
           // This would be a place to implement adding a book
           post {
             entity(as[String]) {
               body =>
-                onSuccess(withBodyAs[Book](body)(Books.post))(resp => complete(resp))
+                complete(StatusCodes.OK)
+//                onSuccess(withBodyAs[Book](body)(Books.post))(resp => complete(resp))
             }
           }
         )
       },
       path(Segment) { bookId =>
         get {
-          onSuccess(Books.get(bookId.toInt))(resp => complete(resp))
+          complete(StatusCodes.OK)
+//          onSuccess(Books.get(bookId.toInt))(resp => complete(resp))
         }
       }
     )
@@ -51,13 +54,15 @@ class Routes(implicit ec: ExecutionContext) {
         put {
           entity(as[String]) {
             body =>
-              onSuccess(withBodyAs[Copy](body)(Copies.update))(resp => complete(resp))
+              complete(StatusCodes.OK)
+//              onSuccess(withBodyAs[Copy](body)(Copies.update))(resp => complete(resp))
           }
         }
       },
       path(Segment) { copyId =>
         put {
-          onSuccess(Copies.hold(copyId.toInt))(resp => complete(resp))
+          complete(StatusCodes.OK)
+//          onSuccess(Copies.hold(copyId.toInt))(resp => complete(resp))
         }
       }
     )

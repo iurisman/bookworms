@@ -30,5 +30,13 @@ trait AbstractDatabase {
 }
 
 object AbstractDatabase {
-  lazy val database: AbstractDatabase = Postgres
+  val database: AbstractDatabase = NoDatabase //Postgres
+  val NoDatabase = new AbstractDatabase {
+    override def getBooks(implicit ec: ExecutionContext): Future[Seq[Book]] = ???
+    override def getBook(bookId: Int)(implicit ec: ExecutionContext): Future[Option[Book]] = ???
+    override def getBookDetails(bookId: Int)(implicit ec: ExecutionContext): Future[Option[BookDetails]] = ???
+    override def getCopiesOf(bookId: Int)(implicit ec: ExecutionContext): Future[Seq[Copy]] = ???
+    override def getCopy(copyId: Int)(implicit ec: ExecutionContext): Future[Option[Copy]] = ???
+    override def updateCopy(copy: Copy)(implicit ec: ExecutionContext): Future[Boolean] = ???
+  }
 }
