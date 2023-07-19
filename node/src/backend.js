@@ -1,4 +1,9 @@
-const url = "http://localhost:8080"
+/** We're proxying API calls via Node, rather than going directly.
+  * This help avoiding setting up CORS on the server. For that to work,
+  * the fetch URIs must not contain server, which fetch() assumes to
+  * be the same server where the requesting page came from.
+  */
+const url = ""
 
 export function getBooks() {
   return fetch(`${url}/books`).then(resp => resp.json());
