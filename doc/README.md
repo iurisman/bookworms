@@ -3,7 +3,7 @@
 ## Prerequisites
 1. Install Java 11 JDK.
 ## Steps
-1. Craated and cloned git repository `bookworms`.
+1. Created and cloned git repository `bookworms`.
 2. Created a seed application with 
 ```
 sbt new akka/akka-http-quickstart-scala.g8

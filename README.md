@@ -14,12 +14,12 @@ $ git clone git@github.com:iurisman/bookworms.git
 
 #### Create the Postgres Database
 ```shell
-$ cd bookworms/src/test/db
+$ cd bookworms/src/db
 ```
 To run with containerized Postgres:
 Ensure Docker Desktop is running
 ```shell
-./postgres-down.sh
+./postgres-up.sh
 ./schema.sh
 ```
 This will:
