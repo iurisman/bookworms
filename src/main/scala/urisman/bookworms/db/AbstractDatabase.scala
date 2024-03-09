@@ -30,8 +30,7 @@ trait AbstractDatabase {
 }
 
 object AbstractDatabase {
-  val database: AbstractDatabase = NoDatabase //Postgres
-  val NoDatabase = new AbstractDatabase {
+  private val NoDatabase = new AbstractDatabase {
     override def getBooks(implicit ec: ExecutionContext): Future[Seq[Book]] = ???
     override def getBook(bookId: Int)(implicit ec: ExecutionContext): Future[Option[Book]] = ???
     override def getBookDetails(bookId: Int)(implicit ec: ExecutionContext): Future[Option[BookDetails]] = ???
@@ -39,4 +38,5 @@ object AbstractDatabase {
     override def getCopy(copyId: Int)(implicit ec: ExecutionContext): Future[Option[Copy]] = ???
     override def updateCopy(copy: Copy)(implicit ec: ExecutionContext): Future[Boolean] = ???
   }
+  val database: AbstractDatabase = NoDatabase //Postgres
 }
